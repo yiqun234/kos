@@ -5,22 +5,22 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const milestones = [
+  { year: "2020", progress: 0.05, text: "Concept and algorithm development", align: "left" },
+  { year: "2021", progress: 0.22, text: "First prototype and lab testing", align: "right" },
+  { year: "2022", progress: 0.40, text: "Secured seed funding", align: "left" },
+  { year: "2023", progress: 0.55, text: "Clinical trials initiated", align: "left" },
+  { year: "2024", progress: 0.65, text: "Founded in Palo Alto", align: "right" },
+  { year: "2025", progress: 0.85, text: "FDA clearance anticipated", align: "left" },
+  { year: "2026", progress: 0.98, text: "", align: "center" },
+] as const;
+
 export default function RoadTimeline() {
   const containerRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
   const highlightRef = useRef<SVGPathElement>(null);
   const milestoneRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  const milestones = [
-    { year: "2020", progress: 0.05, text: "Concept and algorithm development", align: "left" },
-    { year: "2021", progress: 0.22, text: "First prototype and lab testing", align: "right" },
-    { year: "2022", progress: 0.40, text: "Secured seed funding", align: "left" },
-    { year: "2023", progress: 0.55, text: "Clinical trials initiated", align: "left" },
-    { year: "2024", progress: 0.65, text: "Founded in Palo Alto", align: "right" },
-    { year: "2025", progress: 0.85, text: "FDA clearance anticipated", align: "left" },
-    { year: "2026", progress: 0.98, text: "", align: "center" },
-  ];
 
   useLayoutEffect(() => {
     const path = pathRef.current;
@@ -273,7 +273,7 @@ export default function RoadTimeline() {
           <div
             key={idx}
             ref={(el) => { milestoneRefs.current[idx] = el; }}
-            className="milestone-marker absolute"
+            className={`milestone-marker absolute milestone-${idx}`}
           >
             <svg
               className="pillar-line"
@@ -283,7 +283,18 @@ export default function RoadTimeline() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <line x1="2" y1="0" x2="2" y2="80" strokeWidth="4" stroke="white" opacity="0.5" />
+              <defs>
+                <linearGradient id={`pillarDefault-${idx}`} x1="-0.5" y1="0" x2="0.282761" y2="80" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="white"/>
+                  <stop offset="1" stopColor="#171717"/>
+                </linearGradient>
+                <linearGradient id={`pillarActive-${idx}`} x1="-1.5" y1="0" x2="-0.545507" y2="80" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#00B6D9"/>
+                  <stop offset="1" stopColor="#171717"/>
+                </linearGradient>
+              </defs>
+              <line className="default-line" x1="2" y1="0" x2="2" y2="80" strokeWidth="4" stroke={`url(#pillarDefault-${idx})`} />
+              <line className="active-line" x1="2" y1="0" x2="2" y2="80" strokeWidth="4" stroke={`url(#pillarActive-${idx})`} />
             </svg>
 
             <div className={`text-container absolute ${
@@ -316,8 +327,21 @@ export default function RoadTimeline() {
       </div>
 
              <style jsx>{`
-         .milestone-marker.is-active .pillar-line line {
-           stroke: #00B6D9;
+         /* Default state: show default line, hide active line */
+         .milestone-marker .pillar-line .default-line {
+           opacity: 1;
+           transition: opacity 0.6s ease;
+         }
+         .milestone-marker .pillar-line .active-line {
+           opacity: 0;
+           transition: opacity 0.6s ease;
+         }
+         
+         /* Active state: hide default line, show active line */
+         .milestone-marker.is-active .pillar-line .default-line {
+           opacity: 0;
+         }
+         .milestone-marker.is-active .pillar-line .active-line {
            opacity: 1;
          }
          .milestone-marker.is-active .year-text {
