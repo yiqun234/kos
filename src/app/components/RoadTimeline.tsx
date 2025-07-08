@@ -8,11 +8,11 @@ gsap.registerPlugin(ScrollTrigger);
 const milestones = [
   { year: "2020", progress: 0.05, text: "Concept and algorithm development", align: "left" },
   { year: "2021", progress: 0.22, text: "First prototype and lab testing", align: "right" },
-  { year: "2022", progress: 0.40, text: "Secured seed funding", align: "left" },
-  { year: "2023", progress: 0.55, text: "Clinical trials initiated", align: "left" },
-  { year: "2024", progress: 0.65, text: "Founded in Palo Alto", align: "left" },
-  { year: "2025", progress: 0.85, text: "FDA clearance anticipated", align: "right" },
-  { year: "2026", progress: 0.98, text: "", align: "center" },
+  { year: "2022", progress: 0.30, text: "Secured seed funding", align: "left" },
+  { year: "2023", progress: 0.45, text: "Clinical trials initiated", align: "left" },
+  { year: "2024", progress: 0.64, text: "Founded in Palo Alto", align: "left" },
+  { year: "2025", progress: 0.80, text: "FDA clearance anticipated", align: "right" },
+  { year: "2026", progress: 0.895, text: "", align: "center" },
 ] as const;
 
 export default function RoadTimeline() {
@@ -303,12 +303,12 @@ export default function RoadTimeline() {
             </div>
 
             {/* Description text on the side - positioned at upper part of pillar */}
-            <div className={`text-container absolute top-32 -translate-y-16 ${
-              milestone.align === 'left' ? 'right-2 mr-2 text-right' : 
-              milestone.align === 'right' ? 'left-2 ml-2 text-left' : 
+            <div className={`text-container absolute top-14 -translate-y-16 ${
+              milestone.align === 'left' ? 'right-6 mr-2 text-right' : 
+              milestone.align === 'right' ? 'left-6 ml-2 text-left' : 
               'left-1/2 -translate-x-1/2 -translate-y-20 text-center'
             }`}>
-              <div className="description-text text-lg text-white opacity-0 transition-opacity duration-300 whitespace-nowrap flex items-center">
+              <div className="description-text text-lg text-white whitespace-nowrap flex items-center">
                 {milestone.text && (
                     <svg 
                     className="location-icon mr-2 flex-shrink-0" 
@@ -324,7 +324,7 @@ export default function RoadTimeline() {
                   </svg>
                 )}
                 
-                {milestone.text}
+                <span className="text-content">{milestone.text}</span>
               </div>
             </div>
           </div>
@@ -350,30 +350,66 @@ export default function RoadTimeline() {
            opacity: 1;
          }
          
-         /* Pillar animation */
-         .milestone-marker .pillar-line {
-           transform: translateY(0);
-           transition: transform 0.3s ease;
-         }
-         .milestone-marker.is-active .pillar-line {
-           transform: translateY(-8px);
+          /* Pillar animation - default state shows only top part */
+          .milestone-marker .pillar-line {
+            transform: translateY(100px);
+            transition: transform 0.6s ease-out;
+          }
+          .milestone-marker.is-active .pillar-line {
+            transform: translateY(0);
+          }
+         
+                   /* Year text animation - default state shows only bottom part */
+          .milestone-marker .year-text {
+            transform: translateY(100px);
+            transition: transform 0.6s ease-out;
+          }
+          .milestone-marker.is-active .year-text {
+            color: #00B6D9;
+            opacity: 1;
+            transform: translateY(0);
+          }
+         /* Description text animations */
+         .milestone-marker .description-text {
+           opacity: 0;
+           transform: scale(0.8);
+           transition: all 0.6s ease-out;
          }
          
-         /* Year text animation */
-         .milestone-marker .year-text {
-           transform: translateY(0);
+         .milestone-marker .text-content {
+           transform: translateX(-20px);
+           opacity: 0;
+           transition: all 0.8s ease-out;
+           transition-delay: 0.2s;
          }
-         .milestone-marker.is-active .year-text {
-           color: #00B6D9;
-           opacity: 1;
-           transform: translateY(-12px);
+         
+         .milestone-marker .location-icon {
+           transform: scale(0) rotate(-180deg);
+           opacity: 0;
+           transition: all 0.7s ease-out;
+           transition-delay: 0.1s;
          }
+         
          .milestone-marker.is-active .description-text {
            opacity: 1;
            color: #00B6D9;
+           transform: scale(1);
          }
+         
+         .milestone-marker.is-active .text-content {
+           transform: translateX(0);
+           opacity: 1;
+         }
+         
          .milestone-marker.is-active .location-icon {
            color: #00B6D9;
+           transform: scale(1) rotate(0deg);
+           opacity: 1;
+         }
+         
+         /* Special animation for right-aligned text */
+         .milestone-marker .text-container:has(.text-right) .text-content {
+           transform: translateX(20px);
          }
        `}</style>
     </div>
