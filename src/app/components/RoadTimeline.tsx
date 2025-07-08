@@ -10,8 +10,8 @@ const milestones = [
   { year: "2021", progress: 0.22, text: "First prototype and lab testing", align: "right" },
   { year: "2022", progress: 0.40, text: "Secured seed funding", align: "left" },
   { year: "2023", progress: 0.55, text: "Clinical trials initiated", align: "left" },
-  { year: "2024", progress: 0.65, text: "Founded in Palo Alto", align: "right" },
-  { year: "2025", progress: 0.85, text: "FDA clearance anticipated", align: "left" },
+  { year: "2024", progress: 0.65, text: "Founded in Palo Alto", align: "left" },
+  { year: "2025", progress: 0.85, text: "FDA clearance anticipated", align: "right" },
   { year: "2026", progress: 0.98, text: "", align: "center" },
 ] as const;
 
@@ -278,31 +278,36 @@ export default function RoadTimeline() {
             <svg
               className="pillar-line"
               width="4"
-              height="80"
-              viewBox="0 0 4 80"
+              height="259"
+              viewBox="0 0 4 259"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
               <defs>
-                <linearGradient id={`pillarDefault-${idx}`} x1="-0.5" y1="0" x2="0.282761" y2="80" gradientUnits="userSpaceOnUse">
+                <linearGradient id={`pillarDefault-${idx}`} x1="-0.5" y1="-2.18457e-08" x2="0.282761" y2="258.999" gradientUnits="userSpaceOnUse">
                   <stop stopColor="white"/>
                   <stop offset="1" stopColor="#171717"/>
                 </linearGradient>
-                <linearGradient id={`pillarActive-${idx}`} x1="-1.5" y1="0" x2="-0.545507" y2="80" gradientUnits="userSpaceOnUse">
+                <linearGradient id={`pillarActive-${idx}`} x1="-0.5" y1="-2.18457e-08" x2="0.282761" y2="258.999" gradientUnits="userSpaceOnUse">
                   <stop stopColor="#00B6D9"/>
                   <stop offset="1" stopColor="#171717"/>
                 </linearGradient>
               </defs>
-              <line className="default-line" x1="2" y1="0" x2="2" y2="80" strokeWidth="4" stroke={`url(#pillarDefault-${idx})`} />
-              <line className="active-line" x1="2" y1="0" x2="2" y2="80" strokeWidth="4" stroke={`url(#pillarActive-${idx})`} />
+              <line className="default-line" x1="2" y1="8.74229e-08" x2="1.99999" y2="259" strokeWidth="4" stroke={`url(#pillarDefault-${idx})`} />
+              <line className="active-line" x1="2" y1="8.74229e-08" x2="1.99999" y2="259" strokeWidth="4" stroke={`url(#pillarActive-${idx})`} />
             </svg>
 
-            <div className={`text-container absolute ${
-              milestone.align === 'left' ? 'right-full mr-4 text-right' : 
-              milestone.align === 'right' ? 'left-full ml-4 text-left' : 
-              'left-1/2 -translate-x-1/2 bottom-full mb-4 text-center'
+            {/* Year text on top of pillar */}
+            <div className="year-text absolute left-1/2 -translate-x-1/2 bottom-full mb-2 text-xl text-white opacity-70 text-center transition-all duration-300">
+              {milestone.year}
+            </div>
+
+            {/* Description text on the side - positioned at upper part of pillar */}
+            <div className={`text-container absolute top-32 -translate-y-16 ${
+              milestone.align === 'left' ? 'right-2 mr-2 text-right' : 
+              milestone.align === 'right' ? 'left-2 ml-2 text-left' : 
+              'left-1/2 -translate-x-1/2 -translate-y-20 text-center'
             }`}>
-              <div className="year-text text-xl text-white opacity-70 mb-1">{milestone.year}</div>
               <div className="description-text text-lg text-white opacity-0 transition-opacity duration-300 whitespace-nowrap flex items-center">
                 {milestone.text && (
                     <svg 
@@ -344,9 +349,24 @@ export default function RoadTimeline() {
          .milestone-marker.is-active .pillar-line .active-line {
            opacity: 1;
          }
+         
+         /* Pillar animation */
+         .milestone-marker .pillar-line {
+           transform: translateY(0);
+           transition: transform 0.3s ease;
+         }
+         .milestone-marker.is-active .pillar-line {
+           transform: translateY(-8px);
+         }
+         
+         /* Year text animation */
+         .milestone-marker .year-text {
+           transform: translateY(0);
+         }
          .milestone-marker.is-active .year-text {
            color: #00B6D9;
            opacity: 1;
+           transform: translateY(-12px);
          }
          .milestone-marker.is-active .description-text {
            opacity: 1;
