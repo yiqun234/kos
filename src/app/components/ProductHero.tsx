@@ -32,7 +32,7 @@ const ProductHero = () => {
               src="/images/shou.png" 
               alt="Hand wearing Argus device" 
               fill
-              style={{ objectFit: 'contain', objectPosition: 'left bottom' }}
+              className="object-contain object-left-bottom"
           />
         </div>
       </div>

@@ -70,7 +70,7 @@ const AboutHero = () => {
           src="/images/ab.png"
           alt="Background"
           fill
-          objectFit="cover"
+          className="object-cover"
           priority
         />
         <div

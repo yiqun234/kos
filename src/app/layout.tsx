@@ -41,7 +41,7 @@ export default function RootLayout({
       >
         <Navigation />
         <main>
-          {children}
+        {children}
         </main>
         <Footer />
       </body>
