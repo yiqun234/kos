@@ -1,4 +1,5 @@
-import HeroVideo from './components/HeroVideo'
+// import HeroVideo from './components/HeroVideo'
+import HeroBanner from './components/HeroBanner'
 import MissionChart from './components/MissionChart'
 import HealthcareDelivery from './components/HealthcareDelivery'
 import Team from './components/Team'
@@ -10,7 +11,8 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Banner with Scroll Animation */}
-      <HeroVideo />
+      {/* <HeroVideo /> */}
+      <HeroBanner />
 
       {/* Mission Section */}
       <section className="pt-40 pb-20 bg-white">
